@@ -31,28 +31,22 @@ app.use(cors()) //使用cors
 // logger
 app.use(async (ctx, next) => {
     const start = new Date()
-    
     let {url = ''} = ctx;
-    console.log("ctx.url",url)
-    console.log("ctx.token",ctx.request.headers.token)
-    if(url != '/users/login' && url != '/users/create'){//需要校验登录态
-        console.log("1111")
+    //校验登录
+    if(url != '/user/login' && url != '/user/create'){
         // 验证 Token
         let check = Utils.verifyToken(ctx.request.headers.token);
-        console.log("check",check)
         if(check.code == 200) {
-            console.log("验证通过",check);
             ctx.cookies.set('user', check, {
                 maxAge:86400000,
                 httpOnly: true
             });
+            Object.defineProperty(ctx.request.headers, 'userId', {value: check.data.userId});// 只读属性
             await next();
         }else{
-            console.log("验证失败",check)
             return ctx.body = check;
         }
     }else{
-        console.log("2222")
         await next();
     }
     const ms = new Date() - start
@@ -66,7 +60,7 @@ app.use(public.routes(), public.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
+    console.error('server error', err, ctx)
 });
 
 module.exports = app

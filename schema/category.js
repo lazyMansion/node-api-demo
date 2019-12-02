@@ -8,16 +8,22 @@ module.exports = function(sequelize,DataTypes){
             autoIncrement: true
         },
         //分类标题
-        name: {
+        label: {
             type: DataTypes.STRING,
             allowNull: false,
-            field: 'name'
+            field: 'label'
         },
         //上级ID
         parentId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             field: 'parentId'
+        },
+        //文章id
+        articleId:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            field: 'articleId'
         },
         // 创建时间
         createdAt:{

@@ -27,7 +27,7 @@ class userController {
                     username: user_data.username,
                     createdAt: user_data.createdAt
                 }
-                let token = jwt.sign(userInfo, secret, { expiresIn: 60 * 3 })
+                let token = jwt.sign(userInfo, secret, { expiresIn: 60 * 3000 })
                 userInfo.token = token
 
                 ctx.response.status = 200;
@@ -48,7 +48,7 @@ class userController {
      * @returns {Promise.<void>}
      */
     static async detail(ctx){
-        let id = ctx.params.id;
+        let id = ctx.request.header.userId;
         if(id){
             try{
                 // 查询用户详情模型
@@ -56,7 +56,7 @@ class userController {
                 ctx.response.status = 200;
                 ctx.body = new SuccessModel(data,'查询成功')
             }catch(err){
-                ctx.response.status = 412;
+                ctx.response.status = 200;
                 ctx.body = new ErrorModel(err, '查询失败')
             }
         }else {
@@ -72,24 +72,26 @@ class userController {
             try{
                 req.password = md5(req.password);
                 const ret = await UserModel.login(req);
+                if(!!ret){
+                    const user_data = await UserModel.getUserDetail(ret.id);
+                    let userInfo = {
+                        username: user_data.username,
+                        userId: user_data.id,
+                        createdAt: user_data.createdAt
+                    }
+                    let token = jwt.sign(userInfo, secret, { expiresIn: 60 * 3000 })
+                    userInfo.token = token
 
-                const user_data = await UserModel.getUserDetail(ret.id);
-                let userInfo = {
-                    username: user_data.username,
-                    createdAt: user_data.createdAt
-                }
-                let token = jwt.sign(userInfo, secret, { expiresIn: 60 * 3 })
-                userInfo.token = token
-
-                ctx.response.status = 200;
-                ctx.body = new SuccessModel(userInfo,'登录成功')
+                    ctx.body = new SuccessModel(userInfo,'登录成功')
+                }else{
+                    ctx.body = new ErrorModel('账号或密码错误')
+                }                
             }catch(err){
-                ctx.response.status = 300;
-                ctx.body = new ErrorModel(err, '登录失败')
+                ctx.body = new ErrorModel('登录失败')
             }
         }else {
-            ctx.response.status = 300;
-            ctx.body = new ErrorModel("参数不符合")
+            ctx.response.status = 200;
+            ctx.body = new ErrorModel("账号或者密码不能为空")
         }
     }
 }

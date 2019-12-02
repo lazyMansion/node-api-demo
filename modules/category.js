@@ -11,23 +11,36 @@ class CategoryModel {
     // 创建分类
     static async createCategory(data){
         return await Category.create({
-            name: data.name, //分类名称
-            parentId: data.parentId || 0  //分类上级Id
+            label: data.label, //分类名称
+            parentId: data.parentId || 0,  //分类上级Id
+            articleId: data.articleId || 0 //绑定文章ID
+        })
+    }
+    //编辑分类
+    static async editCategory(data){
+        console.log('data',data)
+        return await Category.update({
+            label: data.label,
+            articleId: data.articleId,
+        }, {
+            where: {id: data.id}
         })
     }
 
     // 查询分类 单个
     static async getCategory(id){
         return await Category.findOne({
-            where:{
-                id
-            }
+            where:{id},
+            attributes: ['id','label','parentId','articleId']
         })
     }
 
     // 查询分类 所有分类
     static async getCategoryList(){
-        return await Category.findAll({row:true})
+        return await Category.findAll({
+            raw: true,
+            attributes: ['id','label','parentId','articleId']
+        })
     }
 }
 

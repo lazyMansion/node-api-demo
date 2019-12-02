@@ -17,20 +17,19 @@ let util = {
             //     }
             // })
 
-
             let result = jwt.verify(token, cert) || {};
-            console.log("verifyToken",result)
             let {exp = 0} = result,current = Math.floor(Date.now()/1000);
             if(current <= exp){
                 delete result.iat;
                 delete result.exp;
-                res = jwt.sign(result, secret, { expiresIn: 60 * 3 })
-                return {code: 200,data:res};
+                //自动更新token
+                //res = jwt.sign(result, secret, { expiresIn: 60 * 3 })
+                return new SuccessModel(result,'token更新')
             }else{
-                return {code:1005,msg:'登录已过期'};
+                return new ErrorModel('登录已过期')
             }
         }catch(err){
-            return new SuccessModel(res,err)
+            return new ErrorModel(err)
         }
         
         
