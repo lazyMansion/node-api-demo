@@ -18,7 +18,7 @@ Timestamp			|long		|R			|当前UNIX时间戳
     "Header":{
         "Token":"2366CF921FAD44CCBB07FF9CD02FC90E",
         "Version":"3.2.0",
-        "SystemId":100,
+        "SystemId":1001,
         "Timestamp":1502870664
     }
 }
