@@ -38,26 +38,26 @@ class CategoryModel {
 
     //删除单个分类
     static async deleteCategory(id){
-        return await Category.destroy({
-            where: {
-                $or: [
-                    {id: id},
-                    {parentId: id}
-                ]
-            }
-        })
-
-        // let ret = await Category.destroy({
+        // return await Category.destroy({
         //     where: {
-        //         id
+        //         $or: [
+        //             {id: id},
+        //             {parentId: id}
+        //         ]
         //     }
         // })
-        //     await Category.destroy({
-        //         where: {
-        //             parentId: id
-        //         }
-        //     })
-        // return ret
+
+        let ret = await Category.destroy({
+            where: {
+                id
+            }
+        })
+            await Category.destroy({
+                where: {
+                    parentId: id
+                }
+            })
+        return ret
     }
 
     // 查询分类 所有分类
