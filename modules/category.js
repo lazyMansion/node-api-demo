@@ -3,6 +3,7 @@ const db = require('../config/db');
 
 // 引入sequelize对象
 const Sequelize = db.sequelize;
+const Op = Sequelize.Op;
 // 引入数据表模型
 const Category = Sequelize.import('../schema/category');
 Category.sync({force: false}); //自动创建表
@@ -33,6 +34,30 @@ class CategoryModel {
             where:{id},
             attributes: ['id','label','parentId','articleId']
         })
+    }
+
+    //删除单个分类
+    static async deleteCategory(id){
+        return await Category.destroy({
+            where: {
+                $or: [
+                    {id: id},
+                    {parentId: id}
+                ]
+            }
+        })
+
+        // let ret = await Category.destroy({
+        //     where: {
+        //         id
+        //     }
+        // })
+        //     await Category.destroy({
+        //         where: {
+        //             parentId: id
+        //         }
+        //     })
+        // return ret
     }
 
     // 查询分类 所有分类

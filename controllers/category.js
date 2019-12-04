@@ -85,6 +85,30 @@ class categoryController {
             ctx.body = new ErrorModel(err,"查询失败")
         }
     }
+    //删除分类
+    static async delete(ctx){
+        let req = ctx.request.body;
+        if(req.id){
+            try{
+                console.log('reqID',req.id)
+                const ret = await CategoryModel.deleteCategory(req.id);
+                console.log('ret',ret)
+                if(!!ret){
+                    ctx.response.status = 200;
+                    ctx.body = new SuccessModel('删除成功')
+                }else{
+                    ctx.body = new ErrorModel("删除失败")
+                }
+            }catch(err){
+                console.log('errControllers',err)
+                ctx.response.status = 300;
+                ctx.body = new ErrorModel(err,"删除失败")
+            }
+        }else{
+            ctx.response.status = 200;
+            ctx.body = new ErrorModel("参数不齐全")
+        }
+    }
 }
 
 module.exports = categoryController
