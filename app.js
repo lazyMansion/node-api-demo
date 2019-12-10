@@ -7,10 +7,8 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 //解决跨域
 const cors = require('koa-cors')
-const users = require('./routes/users')
-const article = require('./routes/article')
-const public = require('./routes/public')
-const Utils = require('./utils/index')
+const Utils = require('./src/utils/index')
+const router = require('./src/routes');
 
 // error handler
 onerror(app)
@@ -23,7 +21,7 @@ app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 
-app.use(views(__dirname + '/views', {
+app.use(views(__dirname + '/src/views', {
   extension: 'pug'
 }))
 app.use(cors()) //使用cors
@@ -54,9 +52,7 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-app.use(users.routes(), users.allowedMethods())
-app.use(article.routes(), article.allowedMethods())
-app.use(public.routes(), public.allowedMethods())
+router(app);
 
 // error-handling
 app.on('error', (err, ctx) => {
