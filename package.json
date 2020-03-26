@@ -1,33 +1,25 @@
 {
-  "name": "admin-api",
-  "version": "0.1.0",
-  "private": true,
+  "name": "node-api-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon bin/www",
-    "dev": "./node_modules/.bin/nodemon bin/www",
-    "prd": "pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "debug": "^4.1.1",
-    "jsonwebtoken": "^8.5.1",
-    "koa": "^2.7.0",
-    "koa-bodyparser": "^4.2.1",
-    "koa-convert": "^1.2.0",
-    "koa-cors": "0.0.16",
-    "koa-json": "^2.0.2",
-    "koa-logger": "^3.2.0",
-    "koa-onerror": "^4.1.0",
-    "koa-router": "^7.4.0",
-    "koa-static": "^5.0.0",
-    "koa-views": "^6.2.0",
-    "md5": "^2.2.1",
-    "mysql": "^2.17.1",
-    "mysql2": "^2.0.0",
-    "pug": "^2.0.3",
-    "sequelize": "^5.21.2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lazyMansion/node-api-demo.git"
   },
-  "devDependencies": {
-    "nodemon": "^1.19.4"
+  "keywords": [],
+  "author": "lazyman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lazyMansion/node-api-demo/issues"
+  },
+  "homepage": "https://github.com/lazyMansion/node-api-demo#readme",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
+    "sequelize": "^5.21.5"
   }
 }
